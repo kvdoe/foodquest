@@ -100,9 +100,17 @@ export default async function handler(req, res) {
   const yd         = await yr.json();
   const businesses = yd.businesses || [];
 
+  // For healthy searches, strip results whose Yelp categories include non-healthy food types.
+  // Yelp's category aliases are food-type tags, not health indicators, so chains like BWW or
+  // Marble Slab can appear if they have a secondary tag that matches. This blocklist removes them.
+  const HEALTHY_BLOCKLIST = new Set(['icecream', 'chicken_wings', 'icecreameries', 'hotdog', 'hotdogs']);
+  const results = categoryFilter.includes('healthfood')
+    ? businesses.filter(b => !(b.categories || []).some(c => HEALTHY_BLOCKLIST.has(c.alias)))
+    : businesses;
+
   // Enrich first 6 with real website URLs
   const enriched = await Promise.allSettled(
-    businesses.slice(0, 6).map(async b => {
+    results.slice(0, 6).map(async b => {
       try {
         const dr = await fetch(`https://api.yelp.com/v3/businesses/${b.id}`, { headers: { Authorization: `Bearer ${YELP_API_KEY}` } });
         if (dr.ok) { const dd = await dr.json(); return { ...b, website: dd.website || null }; }
@@ -111,11 +119,11 @@ export default async function handler(req, res) {
     })
   );
   const enrichedMap = {};
-  enriched.forEach((r, i) => { if (r.status === 'fulfilled') enrichedMap[businesses[i].id] = r.value; });
+  enriched.forEach((r, i) => { if (r.status === 'fulfilled') enrichedMap[results[i].id] = r.value; });
 
   return res.status(200).json({
-    restaurants: businesses.map(b => enrichedMap[b.id] || b),
-    total:       yd.total || businesses.length,
+    restaurants: results.map(b => enrichedMap[b.id] || b),
+    total:       yd.total || results.length,
     geocoded:    resolvedName
   });
 }
