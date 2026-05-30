@@ -391,6 +391,23 @@
     }
     .ornament::after { transform: scaleX(-1); }
 
+    /* ─── Location grid ─────────────────────────── */
+    .loc-grid { display: flex; flex-direction: column; gap: 10px; }
+    .loc-row  { display: flex; gap: 10px; }
+    .loc-city { flex: 1; min-width: 0; }
+    .loc-state { width: 152px; flex-shrink: 0; }
+    .loc-zip  { width: 92px; flex-shrink: 0; }
+    .loc-hint {
+      font-size: 11px; color: var(--muted); margin-top: 6px;
+      font-family: 'Crimson Pro', serif; font-style: italic;
+    }
+    @media (max-width: 520px) {
+      .loc-row { flex-wrap: wrap; }
+      .loc-city { width: 100%; flex: none; }
+      .loc-state { flex: 1; min-width: 0; width: auto; }
+      .loc-zip  { width: 80px; }
+    }
+
     /* ─── Search Card ────────────────────────────── */
     #search-card {
       width: 100%; max-width: 680px;
@@ -674,8 +691,74 @@
     <p class="form-eyebrow">✦ &nbsp; Find Your Table &nbsp; ✦</p>
 
     <div class="form-group">
-      <label for="addr">📍 &nbsp; Your Location</label>
-      <input type="text" id="addr" placeholder="Address, neighborhood, or city…" autocomplete="off" />
+      <label>📍 &nbsp; Your Location</label>
+      <div class="loc-grid">
+        <input type="text" id="loc-street" placeholder="Street address or neighborhood (optional)"
+               autocomplete="street-address" />
+        <div class="loc-row">
+          <input type="text" id="loc-city" class="loc-city" placeholder="City *"
+                 autocomplete="address-level2" />
+          <div class="sel-wrap loc-state">
+            <select id="loc-state" autocomplete="address-level1">
+              <option value="">— State —</option>
+              <option value="Alabama">Alabama</option>
+              <option value="Alaska">Alaska</option>
+              <option value="Arizona">Arizona</option>
+              <option value="Arkansas">Arkansas</option>
+              <option value="California">California</option>
+              <option value="Colorado">Colorado</option>
+              <option value="Connecticut">Connecticut</option>
+              <option value="Delaware">Delaware</option>
+              <option value="Florida">Florida</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Hawaii">Hawaii</option>
+              <option value="Idaho">Idaho</option>
+              <option value="Illinois">Illinois</option>
+              <option value="Indiana">Indiana</option>
+              <option value="Iowa">Iowa</option>
+              <option value="Kansas">Kansas</option>
+              <option value="Kentucky">Kentucky</option>
+              <option value="Louisiana">Louisiana</option>
+              <option value="Maine">Maine</option>
+              <option value="Maryland">Maryland</option>
+              <option value="Massachusetts">Massachusetts</option>
+              <option value="Michigan">Michigan</option>
+              <option value="Minnesota">Minnesota</option>
+              <option value="Mississippi">Mississippi</option>
+              <option value="Missouri">Missouri</option>
+              <option value="Montana">Montana</option>
+              <option value="Nebraska">Nebraska</option>
+              <option value="Nevada">Nevada</option>
+              <option value="New Hampshire">New Hampshire</option>
+              <option value="New Jersey">New Jersey</option>
+              <option value="New Mexico">New Mexico</option>
+              <option value="New York">New York</option>
+              <option value="North Carolina">North Carolina</option>
+              <option value="North Dakota">North Dakota</option>
+              <option value="Ohio">Ohio</option>
+              <option value="Oklahoma">Oklahoma</option>
+              <option value="Oregon">Oregon</option>
+              <option value="Pennsylvania">Pennsylvania</option>
+              <option value="Rhode Island">Rhode Island</option>
+              <option value="South Carolina">South Carolina</option>
+              <option value="South Dakota">South Dakota</option>
+              <option value="Tennessee">Tennessee</option>
+              <option value="Texas">Texas</option>
+              <option value="Utah">Utah</option>
+              <option value="Vermont">Vermont</option>
+              <option value="Virginia">Virginia</option>
+              <option value="Washington">Washington</option>
+              <option value="West Virginia">West Virginia</option>
+              <option value="Wisconsin">Wisconsin</option>
+              <option value="Wyoming">Wyoming</option>
+              <option value="District of Columbia">Washington D.C.</option>
+            </select>
+          </div>
+          <input type="text" id="loc-zip" class="loc-zip" placeholder="ZIP"
+                 autocomplete="postal-code" maxlength="5" inputmode="numeric" />
+        </div>
+      </div>
+      <p class="loc-hint">City or ZIP required · Select a state to avoid mix-ups (Frisco TX ≠ San Francisco)</p>
     </div>
 
     <div class="form-group">
@@ -824,24 +907,41 @@
 
   /* ─── Search ─── */
   document.getElementById('go').addEventListener('click', doSearch);
-  document.getElementById('addr').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  ['loc-street','loc-city','loc-zip'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  });
+
+  function highlightField(id) {
+    const el = document.getElementById(id);
+    el.style.borderColor = 'rgba(190,50,30,.65)';
+    el.focus();
+    setTimeout(() => { el.style.borderColor = ''; }, 1800);
+  }
 
   async function doSearch() {
-    const addr = document.getElementById('addr').value.trim();
-    if (!addr) {
-      const inp = document.getElementById('addr');
-      inp.style.borderColor = 'rgba(190,50,30,.65)';
-      inp.focus();
-      setTimeout(() => { inp.style.borderColor = ''; }, 1800);
+    const street  = document.getElementById('loc-street').value.trim();
+    const city    = document.getElementById('loc-city').value.trim();
+    const state   = document.getElementById('loc-state').value;
+    const zip     = document.getElementById('loc-zip').value.trim();
+    const cuisine = document.getElementById('cuisine').value;
+
+    if (!city && !zip) {
+      highlightField('loc-city');
+      document.getElementById('errmsg').textContent = 'Please enter at least a city or ZIP code.';
+      show('errmsg');
       return;
     }
-    const cuisine = document.getElementById('cuisine').value;
+
     ['res-head','res-divider','empty','errmsg'].forEach(hide);
     hide('res-grid');
     document.getElementById('go').disabled = true;
     show('loading');
     try {
-      const q    = new URLSearchParams({ address: addr, cuisine, budget });
+      const q = new URLSearchParams({ cuisine, budget });
+      if (street) q.set('street', street);
+      if (city)   q.set('city',   city);
+      if (state)  q.set('state',  state);
+      if (zip)    q.set('zip',    zip);
       const resp = await fetch('/api/search?' + q);
       const data = await resp.json();
       hide('loading');
@@ -851,9 +951,10 @@
         show('errmsg'); return;
       }
       const list = data.restaurants || [];
+      const fallbackLoc = [city, state].filter(Boolean).join(', ') || zip || 'your location';
       const shortLoc = data.geocoded
-        ? data.geocoded.split(',').slice(0,2).join(',').trim()
-        : addr;
+        ? data.geocoded.split(',').slice(0,3).join(',').trim()
+        : fallbackLoc;
       document.getElementById('loc-name').textContent = 'near ' + shortLoc;
       document.getElementById('res-sub').textContent = list.length
         ? `${list.length} restaurant${list.length!==1?'s':''} found · sorted by distance`
