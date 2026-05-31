@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Foodquest &mdash; Find Your Table</title>
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -709,7 +709,7 @@ body{padding-bottom:68px;}
   box-shadow:0 24px 80px rgba(0,0,0,.85),inset 0 1px 0 rgba(220,170,80,.12);
 }
 .auth-logo{text-align:center;margin-bottom:20px;}
-.auth-logo-icon{width:44px;height:44px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;}
+.auth-logo-icon{width:80px;height:80px;margin:0 auto 10px;overflow:hidden;border-radius:18px;}
 .auth-title{font-family:'Cinzel',serif;font-size:22px;font-weight:700;color:var(--cream);letter-spacing:.05em;text-align:center;}
 .auth-sub{font-family:'Outfit',sans-serif;font-size:13px;color:var(--crm2);text-align:center;margin-top:6px;}
 .auth-tabs{display:flex;gap:0;margin:22px 0 20px;border:1px solid var(--border);border-radius:9px;overflow:hidden;}
@@ -1766,7 +1766,7 @@ function makeCard(r,idx){
     <button id="auth-close" aria-label="Close">&times;</button>
     <div class="auth-logo">
       <div class="auth-logo-icon">
-        <svg viewBox="0 0 40 40" width="44" height="44"><rect width="40" height="40" rx="9" fill="#0C0500"/><rect x="8" y="5" width="3" height="14" rx="1.5" fill="#C8780A"/><rect x="14" y="5" width="3" height="14" rx="1.5" fill="#C8780A"/><rect x="20" y="5" width="3" height="14" rx="1.5" fill="#C8780A"/><path d="M9.5 19 C12 23 19 23 21.5 19" stroke="#C8780A" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="13" y="22" width="5" height="13" rx="2.5" fill="#C8780A"/><ellipse cx="30" cy="18" rx="4" ry="6" fill="#E85D04"/><ellipse cx="30" cy="16" rx="2.2" ry="3.5" fill="#FFD060"/></svg>
+        <img src="/logo.png" width="80" height="80" alt="FoodQuest" style="display:block;width:100%;height:100%;object-fit:cover;"/>
       </div>
       <div class="auth-title">Foodquest</div>
       <div class="auth-sub">Sign in to save your favorite restaurants</div>
@@ -1838,3 +1838,4 @@ function makeCard(r,idx){
 </div>
 </body>
 </html>
+
