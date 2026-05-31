@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background -->
+  <rect width="64" height="64" rx="13" fill="#0C0500"/>
+
+  <!-- Fork — left of center -->
+  <!-- Tine 1 -->
+  <rect x="14" y="9" width="5" height="22" rx="2.5" fill="#C8780A"/>
+  <!-- Tine 2 -->
+  <rect x="23" y="9" width="5" height="22" rx="2.5" fill="#C8780A"/>
+  <!-- Tine 3 -->
+  <rect x="32" y="9" width="5" height="22" rx="2.5" fill="#C8780A"/>
+  <!-- Bridge connecting tines -->
+  <path d="M16.5 31 C18 37 22 39 25.5 39 C29 39 33 37 34.5 31"
+        stroke="#C8780A" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <!-- Handle -->
+  <rect x="22" y="38" width="9" height="17" rx="4.5" fill="#C8780A"/>
+
+  <!-- Flame — top right -->
+  <path d="M47 40 C47 27 40 23 42 16 C44 10 51 13 51 21
+           C54 17 52 11 49 8 C53 9 60 16 58 26 C57 33 52 38 50 40 Z"
+        fill="#E85D04"/>
+  <path d="M48.5 40 C48.5 32 44 30 45.5 25 C46.5 28 48 33 48.5 40 Z"
+        fill="#FFD060"/>
+  <!-- Flame inner glow -->
+  <ellipse cx="49" cy="34" rx="3" ry="5" fill="#F0A020" opacity="0.6"/>
+</svg>
