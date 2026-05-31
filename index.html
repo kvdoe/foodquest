@@ -1282,9 +1282,12 @@ async function doSearch(append){
 
 /* ─── Card builder ───────────────────────────── */
 function makeCard(r,idx){
-  const a=document.createElement('a');
-  a.className='card'; a.href=r.url||'#'; a.target='_blank'; a.rel='noopener noreferrer';
+  const a=document.createElement('div');
+  a.className='card'; a.style.cursor='pointer';
   a.style.animationDelay=`${idx*60}ms`;
+  if(r.url) a.addEventListener('click',function(e){
+    if(!e.target.closest('a')) window.open(r.url,'_blank','noopener,noreferrer');
+  });
   const cats=(r.categories||[]).map(c=>c.title).slice(0,2);
   const dist=mi(r.distance);
   const rating=r.rating||0;
@@ -1293,9 +1296,9 @@ function makeCard(r,idx){
     ?`<img class="card-img" src="${esc(r.image_url)}" alt="${esc(r.name)}" loading="lazy" onerror="this.outerHTML='<div class=card-ph>${esc(r.name[0]||'?')}</div>'">`
     :`<div class="card-ph">${esc(r.name[0]||'?')}</div>`;
   const mapsAddr=addr?encodeURIComponent(r.name+' '+addr):(r.coordinates?r.coordinates.latitude+','+r.coordinates.longitude:'');
-  const mapsBtn=mapsAddr?`<a class="btn-maps" href="https://www.google.com/maps/search/?api=1&query=${mapsAddr}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Maps</a>`:'';
+  const mapsBtn=mapsAddr?`<a class="btn-maps" href="https://www.google.com/maps/search/?api=1&query=${mapsAddr}" target="_blank" rel="noopener noreferrer">Maps</a>`:'';
   const webBtn=(r.website&&!r.website.includes('yelp.com'))
-    ?`<a class="btn-web" href="${esc(r.website)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Website</a>`:'';
+    ?`<a class="btn-web" href="${esc(r.website)}" target="_blank" rel="noopener noreferrer">Website</a>`:'';
   a.innerHTML=`${photo}
     <div class="card-body">
       <div class="card-name">${esc(r.name)}</div>
@@ -1313,7 +1316,7 @@ function makeCard(r,idx){
       </div>
       <div class="card-addr">${esc(addr)}</div>
       <div class="card-btns">
-        <a class="btn-yelp" href="${esc(r.url||'#')}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Yelp</a>
+        <a class="btn-yelp" href="${esc(r.url||'#')}" target="_blank" rel="noopener noreferrer">Yelp</a>
         ${webBtn}
         ${mapsBtn}
       </div>
