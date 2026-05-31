@@ -586,6 +586,11 @@ select option{background:#180900;}
 /* ═══════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════ */
+/* App reveal after portal */
+#app{opacity:0;animation:app-reveal .8s ease-out 3.9s both;}
+@keyframes app-reveal{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+body.portal-done #app{animation:none;opacity:1;transition:opacity .8s ease,transform .8s ease;transform:none;}
+
 @media(max-width:640px){
   #search-card{padding:24px 18px;}
   .budget-row{grid-template-columns:repeat(3,1fr);}
@@ -595,6 +600,8 @@ select option{background:#180900;}
   #win{width:min(155px,44vw);height:min(108px,14vh);}
   .shelf-unit{width:min(68px,6.5vw);}
   #lan-l{left:9%;}#lan-r{right:9%;}
+  header{padding:150px 20px 20px;}
+  body.portal-done #app{transition-delay:.5s;}
 }
 @media(max-width:400px){.shelf-unit{display:none;}#lan-l,#lan-r{display:none;}}
   </style>
@@ -619,16 +626,16 @@ select option{background:#180900;}
   #pc{position:absolute;inset:0;width:100%;height:100%;z-index:1;}
   #pb{position:absolute;border-radius:50%;background:#000;z-index:3;pointer-events:none;opacity:0;}
   #pb.expand{opacity:1;transition:transform .8s cubic-bezier(.55,0,.85,.55);transform:scale(80);}
-  #pl-wrap{position:absolute;z-index:5;pointer-events:none;text-align:center;padding:0 24px;}
+  #pl-wrap{position:absolute;z-index:5;pointer-events:none;text-align:center;padding:0 24px;width:100%;}
   #pl-title{font-family:'Cinzel',serif;font-size:clamp(34px,8vw,80px);font-weight:700;color:#F0DFC0;letter-spacing:.07em;text-shadow:0 0 28px rgba(235,185,55,1),0 0 55px rgba(210,130,15,.8);animation:plp 2.2s ease-in-out infinite;user-select:none;line-height:1.1;}
   #pl-title span{color:#E09020;}
   #pl-sub{font-family:'Outfit',sans-serif;font-size:clamp(11px,2vw,16px);font-weight:300;color:rgba(220,185,100,.7);letter-spacing:.14em;margin-top:12px;user-select:none;}
   #pl-bar-wrap{width:min(200px,55vw);height:3px;background:rgba(255,200,80,.15);border-radius:3px;margin:24px auto 0;overflow:hidden;}
-  #pl-bar{height:100%;width:0;background:linear-gradient(90deg,#C87808,#F0C040);border-radius:3px;animation:loadbar 2.5s ease-out forwards;}
+  #pl-bar{height:100%;width:0;background:linear-gradient(90deg,#C87808,#F0C040);border-radius:3px;animation:loadbar 3.2s ease-out forwards;}
   @keyframes loadbar{to{width:100%}}
   @keyframes plp{0%,100%{opacity:.8;text-shadow:0 0 22px rgba(225,175,45,.9),0 0 45px rgba(205,125,12,.6)}50%{opacity:1;text-shadow:0 0 38px rgba(255,215,75,1),0 0 70px rgba(235,150,28,1)}}
   #pl-wrap.hide{opacity:0;transition:opacity .1s;}
-  #po.bye{opacity:0;transition:opacity .3s ease .65s;pointer-events:none;}
+  #po.bye{opacity:0;transition:opacity .4s ease .2s;pointer-events:none;}
   #pf{position:absolute;inset:0;z-index:6;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,rgba(255,210,80,.9) 0%,rgba(200,120,10,.4) 40%,transparent 70%);}
   #pf.flash{animation:pfb .5s ease-out forwards;}
   @keyframes pfb{0%{opacity:0;transform:scale(.5)}20%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.8)}}
@@ -639,11 +646,12 @@ select option{background:#180900;}
       pf=document.getElementById('pf'),lw=document.getElementById('pl-wrap'),ctx=cv.getContext('2d');
   var W,H,CX,CY,R,vigCache=null;
   function resize(){
-    W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;CX=W/2;CY=H/2;R=Math.min(W,H)*.27;
+    W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;CX=W/2;CY=H/2;R=Math.min(W,H)*.34;
     var d=Math.round(R*1.82)+'px';pb.style.width=d;pb.style.height=d;
     pb.style.left=Math.round(CX-R*.91)+'px';pb.style.top=Math.round(CY-R*.91)+'px';vigCache=null;
   }
-  resize();window.addEventListener('resize',resize);
+  function positionText(){var t=CY+R+22;if(t+110>H)t=H-130;lw.style.top=t+'px';lw.style.left='0';lw.style.right='0';}
+  resize();positionText();window.addEventListener('resize',function(){resize();positionText();});
   function getVig(){
     if(vigCache)return vigCache;
     var oc=document.createElement('canvas');oc.width=W;oc.height=H;
@@ -706,8 +714,8 @@ select option{background:#180900;}
     cancelAnimationFrame(rafId);lw.classList.add('hide');pf.classList.add('flash');
     setTimeout(function(){pb.classList.add('expand');},110);
     setTimeout(function(){ov.classList.add('bye');},380);
-    setTimeout(function(){ov.remove();},1050);
-  },2600);
+    setTimeout(function(){ov.remove();document.body.classList.add('portal-done');},1050);
+  },3400);
 })();
 </script>
 <!-- ═══ END PORTAL ═══ -->
@@ -1279,7 +1287,8 @@ function makeCard(r,idx){
   const photo=r.image_url
     ?`<img class="card-img" src="${esc(r.image_url)}" alt="${esc(r.name)}" loading="lazy" onerror="this.outerHTML='<div class=card-ph>${esc(r.name[0]||'?')}</div>'">`
     :`<div class="card-ph">${esc(r.name[0]||'?')}</div>`;
-  const mapsBtn=r.coordinates?`<a class="btn-maps" href="https://maps.google.com/?q=${r.coordinates.latitude},${r.coordinates.longitude}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Maps</a>`:'';
+  const mapsAddr=addr?encodeURIComponent(r.name+' '+addr):(r.coordinates?r.coordinates.latitude+','+r.coordinates.longitude:'');
+  const mapsBtn=mapsAddr?`<a class="btn-maps" href="https://www.google.com/maps/search/?api=1&query=${mapsAddr}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Maps</a>`:'';
   const webBtn=(r.website&&!r.website.includes('yelp.com'))
     ?`<a class="btn-web" href="${esc(r.website)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Website</a>`:'';
   a.innerHTML=`${photo}
