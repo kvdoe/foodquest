@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "cleanUrls": true,
   "alias": ["thefoodquest.vercel.app", "foodquest-app.vercel.app"],
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" }
+  "routes": [
+    { "src": "/privacy", "dest": "/privacy.html", "status": 200 },
+    { "src": "/",        "dest": "/index.html",   "status": 200 }
   ]
 }
