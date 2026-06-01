@@ -2,6 +2,7 @@
   "version": 2,
   "alias": ["thefoodquest.vercel.app", "foodquest-app.vercel.app"],
   "rewrites": [
+    { "source": "/privacy", "destination": "/api/privacy" },
     { "source": "/", "destination": "/index.html" }
   ]
 }

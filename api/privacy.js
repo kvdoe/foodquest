@@ -1,5 +1,6 @@
 export default function handler(req, res) {
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
   res.status(200).send(`<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,12 +92,6 @@ export default function handler(req, res) {
         These are required fields during sign-up and are stored in your Supabase user profile.
       </li>
       <li>
-        <strong>Google account information</strong> — if you choose to sign in with Google,
-        we receive your name and email address from Google via OAuth. We do not receive your
-        Google password or any other Google account data. This information is stored in your
-        Supabase user profile.
-      </li>
-      <li>
         <strong>Precise location</strong> — only when you explicitly tap
         <em>"Use My Current Location."</em> We request foreground permission only (not
         background). Your coordinates are sent to our Vercel API to search for nearby
@@ -121,7 +116,7 @@ export default function handler(req, res) {
     <h2>3. How We Use Your Information</h2>
     <ul>
       <li>
-        <strong>Email / Google account:</strong> to create and authenticate your account.
+        <strong>Email address:</strong> to create and authenticate your account.
         You can use FoodQuest without creating an account.
       </li>
       <li><strong>Name and username:</strong> to display your name within the app.</li>
@@ -145,7 +140,8 @@ export default function handler(req, res) {
 
     <h2>5. Data Retention and Deletion</h2>
     <p>
-      You may request deletion of your account and all associated data at any time by emailing
+      You may request deletion of your account and all associated data (email, name, username)
+      at any time by emailing
       <a href="mailto:kvchiefs@gmail.com">kvchiefs@gmail.com</a>
       with the subject line <em>"Delete my FoodQuest account."</em>
       We will complete the deletion within 7 days.
@@ -162,15 +158,10 @@ export default function handler(req, res) {
         — authentication and user data storage.
       </li>
       <li>
-        <strong>Google Sign-In</strong>
-        (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">privacy policy</a>)
-        — optional sign-in method. Only your name and email are received.
-      </li>
-      <li>
         <strong>Vercel</strong>
         (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">privacy policy</a>)
-        — serverless API hosting. Vercel retains standard infrastructure logs per their policy.
-        We do not access or use these logs.
+        — serverless API hosting. Vercel retains standard infrastructure logs (IP address,
+        timestamp, request path) as described in their policy. We do not access or use these logs.
       </li>
       <li>
         <strong>Yelp Fusion API</strong> — restaurant data. Search queries contain a location
