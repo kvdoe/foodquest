@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — FoodQuest</title>
+  <style>
+    :root {
+      --bg: #0a0500;
+      --border: rgba(200,119,10,0.25);
+      --amber: #C87808;
+      --cream: #F0DFC0;
+      --muted: rgba(220,185,100,0.55);
+      --body: rgba(220,185,100,0.80);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'Georgia', serif;
+      line-height: 1.8;
+      padding: 40px 20px 80px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+    header {
+      text-align: center;
+      padding: 48px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+    header h1 {
+      font-family: 'Palatino Linotype', Palatino, serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: .05em;
+    }
+    header h1 span { color: var(--amber); }
+    header p { margin-top: 10px; font-size: .95rem; color: var(--muted); letter-spacing: .08em; }
+    h2 {
+      font-family: 'Palatino Linotype', Palatino, serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: .04em;
+      margin: 40px 0 12px;
+    }
+    p { font-size: .97rem; margin-bottom: 12px; }
+    ul { padding-left: 1.5em; margin-bottom: 12px; }
+    li { font-size: .97rem; margin-bottom: 8px; }
+    a { color: var(--amber); text-underline-offset: 3px; }
+    strong { color: var(--cream); }
+    .updated {
+      text-align: center;
+      font-size: .85rem;
+      color: var(--muted);
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .back {
+      display: inline-block;
+      margin-bottom: 32px;
+      color: var(--amber);
+      font-size: .9rem;
+      text-decoration: none;
+    }
+    .back:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <header>
+      <h1>Food<span>Quest</span></h1>
+      <p>Privacy Policy</p>
+    </header>
+
+    <a href="/" class="back">← Back to FoodQuest</a>
+
+    <p>
+      FoodQuest ("we," "our," or "us") is a restaurant discovery app. This Privacy Policy
+      explains what information we collect, why we collect it, and how we protect it.
+      We do not sell your data, show you advertisements, or share your information with
+      any marketing or analytics services.
+    </p>
+
+    <!-- ─── 1. Information We Collect ─────────────────────────────────────── -->
+    <h2>1. Information We Collect</h2>
+
+    <ul>
+      <li>
+        <strong>Email address and password</strong> — collected only if you choose to create
+        an account. Your password is never stored in plain text; Supabase hashes it using
+        bcrypt before storing.
+      </li>
+      <li>
+        <strong>Full name and username</strong> — collected only if you create an account.
+        These are required fields during sign-up and are stored in your Supabase user profile.
+      </li>
+      <li>
+        <strong>Google account information</strong> — if you choose to sign in with Google,
+        we receive your name and email address from Google via OAuth. We do not receive your
+        Google password or any other Google account data. This information is stored in your
+        Supabase user profile.
+      </li>
+      <li>
+        <strong>Precise location</strong> — only when you explicitly tap
+        <em>"Use My Current Location."</em> We request foreground permission only (not
+        background). Your coordinates are sent to our Vercel API to search for nearby
+        restaurants and are not stored in any database by us.
+      </li>
+      <li>
+        <strong>Saved restaurants</strong> — the list of restaurants you mark as a favorite.
+        These are stored exclusively on your device using local storage (AsyncStorage).
+        They are never uploaded to our servers or linked to your account.
+      </li>
+    </ul>
+
+    <!-- ─── 2. Information We Do NOT Collect ─────────────────────────────── -->
+    <h2>2. Information We Do Not Collect</h2>
+    <ul>
+      <li>We do not collect background location at any time.</li>
+      <li>We do not collect device identifiers, advertising IDs, or device fingerprints.</li>
+      <li>We do not use any third-party analytics SDK (no Firebase, Mixpanel, Segment, etc.).</li>
+      <li>We do not show ads and do not share any data with advertising networks.</li>
+      <li>We do not track you across other apps or websites.</li>
+    </ul>
+
+    <!-- ─── 3. How We Use Your Information ───────────────────────────────── -->
+    <h2>3. How We Use Your Information</h2>
+    <ul>
+      <li>
+        <strong>Email / Google account:</strong> to create and authenticate your account.
+        You can use FoodQuest without creating an account.
+      </li>
+      <li>
+        <strong>Name and username:</strong> to display your name within the app.
+      </li>
+      <li>
+        <strong>Location:</strong> to search for restaurants near you via the Yelp Fusion API.
+        Queries are routed through our own Vercel backend — your location is not sent
+        directly to Yelp.
+      </li>
+    </ul>
+
+    <!-- ─── 4. Data Storage and Security ─────────────────────────────────── -->
+    <h2>4. Data Storage and Security</h2>
+    <p>
+      Account data (email, name, username) is stored in
+      <a href="https://supabase.com" target="_blank" rel="noopener">Supabase</a>,
+      a hosted PostgreSQL platform. Supabase enforces row-level security, meaning each
+      user can only access their own data. All data in transit is encrypted with TLS (HTTPS).
+    </p>
+    <p>
+      Saved restaurants are stored only on your device using AsyncStorage and are
+      never transmitted to any server.
+    </p>
+
+    <!-- ─── 5. Data Retention and Deletion ───────────────────────────────── -->
+    <h2>5. Data Retention and Deletion</h2>
+    <p>
+      You may request deletion of your account and all associated data (email, name,
+      username) at any time by emailing
+      <a href="mailto:kvchiefs@gmail.com">kvchiefs@gmail.com</a>
+      with the subject line <em>"Delete my FoodQuest account."</em>
+      We will complete the deletion within 7 days.
+    </p>
+    <p>
+      Saved restaurants stored on your device are permanently deleted when you uninstall
+      the app.
+    </p>
+
+    <!-- ─── 6. Third-Party Services ───────────────────────────────────────── -->
+    <h2>6. Third-Party Services</h2>
+    <ul>
+      <li>
+        <strong>Supabase</strong>
+        (<a href="https://supabase.com/privacy" target="_blank" rel="noopener">privacy policy</a>)
+        — authentication and user data storage.
+      </li>
+      <li>
+        <strong>Google Sign-In</strong>
+        (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">privacy policy</a>)
+        — optional sign-in method. Only your name and email are received.
+      </li>
+      <li>
+        <strong>Vercel</strong>
+        (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">privacy policy</a>)
+        — serverless API hosting. Vercel retains standard infrastructure logs
+        (IP address, timestamp, request path) as described in their policy.
+        We do not access or use these logs.
+      </li>
+      <li>
+        <strong>Yelp Fusion API</strong> — restaurant data. Search queries contain a location
+        and cuisine type only; no personal identifiers are forwarded to Yelp.
+      </li>
+    </ul>
+
+    <!-- ─── 7. Children's Privacy ─────────────────────────────────────────── -->
+    <h2>7. Children's Privacy</h2>
+    <p>
+      FoodQuest is not directed at children under the age of 13. We do not knowingly
+      collect personal information from children under 13. If you believe a child has
+      provided us with personal information, please contact us immediately and we will
+      delete it.
+    </p>
+
+    <!-- ─── 8. Changes to This Policy ─────────────────────────────────────── -->
+    <h2>8. Changes to This Policy</h2>
+    <p>
+      If we make material changes to this policy, we will update the "Last updated" date
+      below. Your continued use of FoodQuest after changes constitutes acceptance of the
+      revised policy.
+    </p>
+
+    <!-- ─── 9. Contact ────────────────────────────────────────────────────── -->
+    <h2>9. Contact</h2>
+    <p>
+      For questions, privacy requests, or account deletion, email
+      <a href="mailto:kvchiefs@gmail.com">kvchiefs@gmail.com</a>.
+    </p>
+
+    <p class="updated">Last updated: June 1, 2026</p>
+
+  </div>
+</body>
+</html>
